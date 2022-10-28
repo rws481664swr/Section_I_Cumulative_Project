@@ -27,7 +27,7 @@ function navLoginClick(evt) {
 function navSubmitClick(e) {
   console.debug("navSubmitClick", e);
   hidePageComponents();
-  $signupForm.show();
+  $storiesForm.show();
 }
 
 $navSubmit.on('click',navSubmitClick)
