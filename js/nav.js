@@ -23,6 +23,15 @@ function navLoginClick(evt) {
   $signupForm.show();
 }
 
+
+function navSubmitClick(e) {
+  console.debug("navSubmitClick", e);
+  hidePageComponents();
+  $signupForm.show();
+}
+
+$navSubmit.on('click',navSubmitClick)
+
 $navLogin.on("click", navLoginClick);
 
 /** When a user first logins in, update the navbar to reflect that. */
