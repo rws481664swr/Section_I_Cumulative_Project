@@ -55,12 +55,9 @@ function putStoriesOnPage() {
 $storiesForm.on('submit', async (e) => {
     e.preventDefault()
     console.debug("submitStory");
-    const $storyTitle = $('#stories-title')
-    const $storiesUrl = $('#stories-url')
-    const $storiesAuthor = $('#stories-author')
-    const title = $storyTitle.val()
-    const url = $storiesUrl.val()
-    const author = $storiesAuthor.val()
+    const [$storyTitle,$storiesUrl,$storiesAuthor] = [$('#stories-title'), $('#stories-url'),$('#stories-author')]
+    const [title, author, url] = [$storyTitle, $storiesAuthor, $storiesUrl].map(e => e.val())
+    $storiesForm.find('input[type="text"]').val('') && $storiesUrl.val('http://')
     if (!title) {
         alert('title is empty')
         return
@@ -73,9 +70,6 @@ $storiesForm.on('submit', async (e) => {
         alert('author is empty')
         return;
     }
-    $storyTitle.val('')
-    $storiesUrl.val('')
-    $storiesAuthor.val('')
     await storyList.addStory(currentUser, {
         title, url, author
     })
