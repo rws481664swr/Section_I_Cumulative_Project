@@ -61,8 +61,21 @@ $storiesForm.on('submit', async (e) => {
     const title = $storyTitle.val()
     const url = $storiesUrl.val()
     const author = $storiesAuthor.val()
+    if (!title) {
+        alert('title is empty')
+        return
+    }
+    if (!url) {
+        alert('url is empty');
+        return
+    }
+    if (!author) {
+        alert('author is empty')
+        return;
+    }
     $storyTitle.val('')
     $storiesUrl.val('')
+    $storiesAuthor.val('')
     await storyList.addStory(currentUser, {
         title, url, author
     })
