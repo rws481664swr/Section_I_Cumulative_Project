@@ -56,14 +56,15 @@ $storiesForm.on('submit', async (e) => {
     e.preventDefault()
     console.debug("submitStory");
     const $storyTitle = $('#stories-title')
-    const title = $storyTitle.val()
-    $storyTitle.val('')
     const $storiesUrl = $('#stories-url')
+    const $storiesAuthor = $('#stories-author')
+    const title = $storyTitle.val()
     const url = $storiesUrl.val()
+    const author = $storiesAuthor.val()
+    $storyTitle.val('')
     $storiesUrl.val('')
-   await storyList.addStory(currentUser, {
-        title, url,
-        author: currentUser.username
+    await storyList.addStory(currentUser, {
+        title, url, author
     })
     hidePageComponents()
     putStoriesOnPage()
