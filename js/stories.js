@@ -52,14 +52,18 @@ function putStoriesOnPage() {
 }
 
 
-$storiesForm.on('submit', (e) => {
+$storiesForm.on('submit', async (e) => {
     e.preventDefault()
     console.debug("submitStory");
-    const title = $('#stories-title')
-    const url = $('#stories-url')
-    const story=storyList.addStory(currentUser,{
-        title,url,
-        author:currentUser.username
+    const $storyTitle = $('#stories-title')
+    const title = $storyTitle.val()
+    $storyTitle.val('')
+    const $storiesUrl = $('#stories-url')
+    const url = $storiesUrl.val()
+    $storiesUrl.val('')
+   await storyList.addStory(currentUser, {
+        title, url,
+        author: currentUser.username
     })
     hidePageComponents()
     putStoriesOnPage()
