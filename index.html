@@ -49,7 +49,11 @@
 
   <!-- loading message (removed by JS after stories loaded) -->
   <div id="stories-loading-msg">Loading&hellip;</div>
-
+  <form action="#" id="stories-form">
+    <label for="stories-title"></label> <input type="text" id="stories-title">
+    <label for="stories-url"></label> <input type="url" id="stories-url">
+    <input type="submit"/>
+  </form>
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
 
