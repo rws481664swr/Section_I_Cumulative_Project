@@ -51,20 +51,33 @@ function putStoriesOnPage() {
     $allStoriesList.show();
 }
 
+//clear inputs
+const clearSubmitInputs=($url)=> {
+    $storiesForm.find('input[type="text"]').val('')
+    $url.val('http://')
+}
 
 $storiesForm.on('submit', async (e) => {
     e.preventDefault()
     console.debug("submitStory");
-    const [$storyTitle, $storiesUrl, $storiesAuthor] = [$('#stories-title'), $('#stories-url'), $('#stories-author')]
-    const [title, author, url] = [$storyTitle, $storiesAuthor, $storiesUrl].map(e => e.val())
-    $storiesForm.find('input[type="text"]').val('') && $storiesUrl.val('http://')
+
+    //get components and values
+    const $inputs = ['title', 'url', 'author'].map(x=>$(`#stories-${x}`))
+    const [, $url, ]=$inputs
+    const [title, author, url] = $inputs.map($x=>$x.val())
+
+    //clear inputs
+    clearSubmitInputs($url);
+
+    //form validation
     if (!title) return alert('title is empty')
     if (!url) return alert('url is empty');
     if (!author) return alert('author is empty')
 
-    await storyList.addStory(currentUser, {
-        title, url, author
-    })
+    //add new data
+    await storyList.addStory(currentUser, { title, url, author})
+
+    //renderings
     hidePageComponents()
     putStoriesOnPage()
 })
