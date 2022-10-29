@@ -20,11 +20,21 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-    // console.debug("generateStoryMarkup", story);
+    let liked = `far`
+    let star = ''
+    if (currentUser) {
+        if (
+            currentUser.favorites.map(e => e.storyId)
+                .includes(story.storyId)) {
+            liked = 'fas'
+        }
+        star = `<i class="fa-star ${liked}"></i>`
+    }
 
     const hostName = story.getHostName();
     return $(`
       <li id="${story.storyId}">
+      ${star}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -41,18 +51,31 @@ function putStoriesOnPage() {
     console.debug("putStoriesOnPage");
 
     $allStoriesList.empty();
-
+    if (currentUser) {
+        console.log('favorites', currentUser.favorites)
+    }
     // loop through all of our stories and generate HTML for them
     for (let story of storyList.stories) {
         const $story = generateStoryMarkup(story);
+        if (currentUser) {
+            $story.on('click', async function ({target}) {
+                const {id} = this
+                if (currentUser.favorites.map(({storyId}) => storyId).includes(id)) {
+                    await currentUser.removeFavorite(story)
+                } else {
+                    await currentUser.addFavorite(story)
+                }
+
+                putStoriesOnPage()
+            })
+        }
         $allStoriesList.append($story);
     }
-
     $allStoriesList.show();
 }
 
 //clear inputs
-const clearSubmitInputs=($url)=> {
+const clearSubmitInputs = ($url) => {
     $storiesForm.find('input[type="text"]').val('')
     $url.val('http://')
 }
@@ -62,9 +85,9 @@ $storiesForm.on('submit', async (e) => {
     console.debug("submitStory");
 
     //get components and values
-    const $inputs = ['title', 'url', 'author'].map(x=>$(`#stories-${x}`))
-    const [, $url, ]=$inputs
-    const [title, author, url] = $inputs.map($x=>$x.val())
+    const $inputs = ['title', 'url', 'author'].map(x => $(`#stories-${x}`))
+    const $url = $inputs[1]
+    const [title, url, author] = $inputs.map($x => $x.val())
 
     //clear inputs
     clearSubmitInputs($url);
@@ -75,9 +98,10 @@ $storiesForm.on('submit', async (e) => {
     if (!author) return alert('author is empty')
 
     //add new data
-    await storyList.addStory(currentUser, { title, url, author})
+    await storyList.addStory(currentUser, {title, url, author})
 
     //renderings
     hidePageComponents()
     putStoriesOnPage()
 })
+
