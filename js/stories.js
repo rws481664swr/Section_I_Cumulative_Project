@@ -12,6 +12,8 @@ async function getAndShowStoriesOnStart() {
     putStoriesOnPage();
 }
 
+
+
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
@@ -19,11 +21,13 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, onFavoritesPage = false) {
     let liked = `far`
     let star = ''
     if (currentUser) {
-        if (
+        if (onFavoritesPage) {
+
+        } else if (
             currentUser.favorites.map(e => e.storyId)
                 .includes(story.storyId)) {
             liked = 'fas'
@@ -45,15 +49,24 @@ function generateStoryMarkup(story) {
     `);
 }
 
+function putFavoritesOnPage() {
+    $favorites.empty()
+    $favorites.show()
+    for (let story of currentUser.favorites){
+        const $story= generateStoryMarkup(story)
+        $favorites.append($story)
+    }
+}
+
+
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage() {
     console.debug("putStoriesOnPage");
 
     $allStoriesList.empty();
-    if (currentUser) {
-        console.log('favorites', currentUser.favorites)
-    }
+
+
     // loop through all of our stories and generate HTML for them
     for (let story of storyList.stories) {
         const $story = generateStoryMarkup(story);
