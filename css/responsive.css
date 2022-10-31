@@ -9,7 +9,9 @@
         margin: 4px 0;
         font-size: 12px;
     }
-
+i{
+    padding: 10px;
+}
 
     .story-author {
         margin-left: .12em;

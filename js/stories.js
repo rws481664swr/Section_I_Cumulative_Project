@@ -25,6 +25,7 @@ function generateStoryMarkup(story, onFavoritesPage = false) {
     let star = ''
     if (currentUser) {
         if (onFavoritesPage) {
+            liked = 'fas'
 
         } else if (
             currentUser.favorites.map(e => e.storyId)

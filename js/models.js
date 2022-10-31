@@ -47,6 +47,7 @@ class StoryList {
      */
 
     static async getStories() {
+
         // Note presence of `static` keyword: this indicates that getStories is
         //  **not** an instance method. Rather, it is a method that is called on the
         //  class directly. Why doesn't it make sense for getStories to be an
