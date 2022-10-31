@@ -12,8 +12,8 @@ let currentUser;
 async function login(evt) {
     console.debug("login", evt);
     evt.preventDefault();
-$loginError.text('')
-$signupError.text('')
+    $loginError.text('')
+    $signupError.text('')
     // grab the username and password
     const username = $("#login-username").val();
     const password = $("#login-password").val();
@@ -32,7 +32,7 @@ $signupError.text('')
         $loginForm.show()
         await $loginError.show()
         await $loginError.text(currentUser)
-        currentUser=null
+        currentUser = null
 
         return
     }
@@ -68,7 +68,7 @@ async function signup(evt) {
         $loginForm.show()
         await $signupError.show()
         await $signupError.text(currentUser)
-        currentUser=null
+        currentUser = null
         return
     }
     saveUserCredentialsInLocalStorage();
@@ -139,6 +139,7 @@ function updateUIOnUserLogin() {
     console.debug("updateUIOnUserLogin");
 
     $allStoriesList.show();
-
+    $signupForm.hide()
+    $loginForm.hide()
     updateNavOnLogin();
 }

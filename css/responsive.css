@@ -1,0 +1,32 @@
+@media (max-width: 500px) {
+
+    .stories-list {
+        margin: 20px 3px;
+    }
+    .story-link {
+        color: black;
+        font-weight: normal;
+        margin: 4px 0;
+        font-size: 12px;
+    }
+
+
+    .story-author {
+        margin-left: .12em;
+    }
+
+    .stories-list > li {
+        list-style: none;
+        color: gray;
+        font-size: 0.7rem;
+        margin: 5px 0;
+        padding: 8px 16px 8px 10px;
+    }
+    small {
+        display: block;
+        padding: 1px 0;
+        font-size: 12px;
+    }
+
+
+}
