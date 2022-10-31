@@ -13,7 +13,6 @@ async function getAndShowStoriesOnStart() {
 }
 
 
-
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
@@ -34,7 +33,10 @@ function generateStoryMarkup(story, onFavoritesPage = false) {
         }
         star = `<i class="fa-star ${liked}"></i>`
     }
-
+    let trash = ''
+    if (currentUser.username === story.username && onFavoritesPage===false) {
+        trash = `<i class="fa fa-trash" aria-hidden="true"></i>`
+    }
     const hostName = story.getHostName();
     return $(`
       <li id="${story.storyId}">
@@ -43,6 +45,8 @@ function generateStoryMarkup(story, onFavoritesPage = false) {
           ${story.title}
         </a>
         <small class="story-hostname">(${hostName})</small>
+       ${trash}
+
         <small class="story-author">by ${story.author}</small>
         <small class="story-user">posted by ${story.username}</small>
       </li>
@@ -52,8 +56,8 @@ function generateStoryMarkup(story, onFavoritesPage = false) {
 function putFavoritesOnPage() {
     $favorites.empty()
     $favorites.show()
-    for (let story of currentUser.favorites){
-        const $story= generateStoryMarkup(story)
+    for (let story of currentUser.favorites) {
+        const $story = generateStoryMarkup(story,true)
         $favorites.append($story)
     }
 }
@@ -72,14 +76,23 @@ function putStoriesOnPage() {
         const $story = generateStoryMarkup(story);
         if (currentUser) {
             $story.on('click', async function ({target}) {
-                const {id} = this
-                if (currentUser.favorites.map(({storyId}) => storyId).includes(id)) {
-                    await currentUser.removeFavorite(story)
-                } else {
-                    await currentUser.addFavorite(story)
-                }
+                if (target.classList.contains('fa-star')) {
+                    const {id} = this
 
-                putStoriesOnPage()
+                    if (currentUser.favorites.map(({storyId}) => storyId).includes(id)) {
+                        await currentUser.removeFavorite(story)
+                    } else {
+                        await currentUser.addFavorite(story)
+                    }
+                    putStoriesOnPage()
+                }else if(target.classList.contains(('fa-trash'))){
+                    //if a favorite
+                    if(currentUser.favorites.map(e=>e.storyId).includes(story.storyId)) {
+                    await    currentUser.removeFavorite(story)
+                    }
+                    await storyList.removeStory(currentUser,story)
+                    putStoriesOnPage()
+                }
             })
         }
         $allStoriesList.append($story);

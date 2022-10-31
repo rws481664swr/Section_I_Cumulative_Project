@@ -81,6 +81,13 @@ class StoryList {
         this.stories.unshift(story)
         return story
     }
+
+    async removeStory(user, toRemove) {
+        const url = `https://hack-or-snooze-v3.herokuapp.com/stories/${toRemove.storyId}`
+        const {loginToken: token} = user
+        await axios({method: 'delete', data: {token}, url})
+        this.stories=this.stories.filter(({storyId})=>toRemove.storyId!==storyId)
+    }
 }
 
 
@@ -108,7 +115,6 @@ class User {
 
         // instantiate Story instances for the user's favorites and ownStories
         this.favorites = favorites.map(s => new Story(s));
-        console.log(this.favorites)
         this.ownStories = ownStories.map(s => new Story(s));
 
         // store the login token on the user so it's easy to find for API calls.
