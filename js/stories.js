@@ -34,7 +34,7 @@ function generateStoryMarkup(story, onFavoritesPage = false) {
         star = `<i class="fa-star ${liked}"></i>`
     }
     let trash = ''
-    if (currentUser.username === story.username && onFavoritesPage===false) {
+    if (currentUser && currentUser.username === story.username && onFavoritesPage===false) {
         trash = `<i class="fa fa-trash" aria-hidden="true"></i>`
     }
     const hostName = story.getHostName();
